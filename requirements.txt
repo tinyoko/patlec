@@ -1,0 +1,39 @@
+# Django Core
+Django==4.2.7
+djangorestframework==3.14.0
+
+# CORS and API
+django-cors-headers==4.3.1
+
+# HTTP Client
+requests==2.31.0
+
+# Environment Management
+python-decouple==3.8
+
+# Image Processing
+Pillow==10.0.1
+
+# Audio Processing
+librosa==0.10.1
+pydub==0.25.1
+
+# Development Tools
+ipython==8.15.0
+django-extensions==3.2.3
+
+# Testing
+pytest==7.4.2
+pytest-django==4.5.2
+factory-boy==3.3.0
+
+# Code Quality
+flake8==6.0.0
+black==23.7.0
+
+# Database (Optional - for production)
+# psycopg2-binary==2.9.7
+
+# Task Queue (Optional - for async processing)
+# celery==5.3.1
+# redis==4.6.0
