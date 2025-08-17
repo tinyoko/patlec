@@ -1,0 +1,245 @@
+app:
+  description: 特許制度の講演内容に基づく質問応答システム（タイムスタンプ付き）
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 特許講演Q&Aシステム
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.0.29@9e17ae8073fe53c282e9dc411e76a3cc52f8e794e4cc2499d204502086871c53
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: 1754896609989-source-1754896624366-target
+      source: '1754896609989'
+      sourceHandle: source
+      target: '1754896624366'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1754896624366-source-llm-target
+      source: '1754896624366'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: llm-source-answer-target
+      source: llm
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 開始
+        type: start
+        variables: []
+      height: 54
+      id: '1754896609989'
+      position:
+        x: -406
+        y: 52
+      positionAbsolute:
+        x: -406
+        y: 52
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1754896624366'
+          - result
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: e2080eea-b7f9-440e-ac6b-33fef26a7a8e
+          role: system
+          text: 'あなたは特許制度の専門家です。提供された講演内容に基づいて、ユーザーの質問に正確に答えてください。
+
+
+            ## 指示：
+
+            1. 検索結果の内容に基づいて回答してください
+
+            2. 検索結果にタイムスタンプ情報（[分:秒-分:秒]の形式）が含まれている場合は、回答の最後に「参考箇所」として必ず含めてください
+
+            3. 特許法の条文や専門用語は正確に説明してください
+
+            4. 検索結果にない情報については推測しないでください
+
+
+            ## 回答形式例：
+
+            （質問への回答）
+
+
+            参考箇所: [10:05-10:17]'
+        - id: 169f18e0-a52b-4003-b640-bde96eaaa29e
+          role: user
+          text: "以下の講演内容を参考に質問に答えてください： \n\n{{#context#}}\n\n質問：{{#sys.query#}}"
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: llm
+      position:
+        x: -406
+        y: 248
+      positionAbsolute:
+        x: -406
+        y: 248
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#llm.text#}}'
+        desc: ''
+        selected: false
+        title: 回答
+        type: answer
+        variables: []
+      height: 105
+      id: answer
+      position:
+        x: -406
+        y: 361
+      positionAbsolute:
+        x: -406
+        y: 361
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - yMktvLdF20akqtuK8C0isoBppihybuhPPxmkt4L3lmlBVIxTy1FLexX6EMqu8s1c
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: weighted_score
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0
+            vector_setting:
+              embedding_model_name: text-embedding-3-small
+              embedding_provider_name: langgenius/openai/openai
+              vector_weight: 1
+        query_variable_selector:
+        - '1754896609989'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 知識検索
+        type: knowledge-retrieval
+      height: 92
+      id: '1754896624366'
+      position:
+        x: -406
+        y: 137
+      positionAbsolute:
+        x: -406
+        y: 137
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 983.1146548474366
+      y: -16.65725274441911
+      zoom: 1.4211783621388612
